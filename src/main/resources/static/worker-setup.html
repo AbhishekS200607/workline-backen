@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile - Workline</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landscape-bg"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            <span>WORKLINE</span>
+        </div>
+    </header>
+
+    <main style="margin-top: 80px; background: #F8FAFC; min-height: 100vh; padding: 2rem;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <span id="profileInitial" style="color: white; font-weight: bold; font-size: 2rem;">W</span>
+                    </div>
+                    <h1 style="color: #1A202C; margin-bottom: 0.5rem;">Complete Your Profile</h1>
+                    <p style="color: #718096;">Add your professional details to start receiving bookings</p>
+                </div>
+
+                <form id="setupForm" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div>
+                        <label style="display: block; color: #374151; font-weight: 500; margin-bottom: 0.5rem;">Profession *</label>
+                        <select id="profession" required style="width: 100%; padding: 0.75rem; border: 2px solid #D1D5DB; border-radius: 8px; transition: border-color 0.3s;" onfocus="this.style.borderColor='#8B7355'" onblur="this.style.borderColor='#D1D5DB'">
+                            <option value="">Select your profession</option>
+                            <option value="Plumber">Plumber</option>
+                            <option value="Electrician">Electrician</option>
+                            <option value="Carpenter">Carpenter</option>
+                            <option value="Cleaner">Cleaner</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="display: block; color: #374151; font-weight: 500; margin-bottom: 0.5rem;">District *</label>
+                        <select id="district" required style="width: 100%; padding: 0.75rem; border: 2px solid #D1D5DB; border-radius: 8px; transition: border-color 0.3s;" onfocus="this.style.borderColor='#8B7355'" onblur="this.style.borderColor='#D1D5DB'">
+                            <option value="">Select your district</option>
+                            <option value="Alappuzha">Alappuzha</option>
+                            <option value="Kottayam">Kottayam</option>
+                            <option value="Ernakulam">Ernakulam</option>
+                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                            <option value="Kozhikode">Kozhikode</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="display: block; color: #374151; font-weight: 500; margin-bottom: 0.5rem;">Hourly Rate (₹) *</label>
+                        <input type="number" id="hourlyRate" required min="100" max="2000" style="width: 100%; padding: 0.75rem; border: 2px solid #D1D5DB; border-radius: 8px; transition: border-color 0.3s;" onfocus="this.style.borderColor='#8B7355'" onblur="this.style.borderColor='#D1D5DB'" placeholder="e.g., 500" />
+                    </div>
+
+                    <div style="background: #F0F9FF; padding: 1rem; border-radius: 8px; border-left: 4px solid #3B82F6;">
+                        <p style="color: #1E40AF; font-size: 0.9rem; margin: 0;">
+                            <strong>Note:</strong> Your profile will be reviewed by our team before activation. You'll receive a confirmation once approved.
+                        </p>
+                    </div>
+
+                    <button type="submit" style="background: #8B7355; color: white; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; font-size: 1rem; transition: background 0.3s;" onmouseover="this.style.background='#6B5B47'" onmouseout="this.style.background='#8B7355'">Complete Setup</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/success-animations.js"></script>
+    <script>
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.userId || user.userType !== 'WORKER') {
+            window.location.href = 'worker-auth.html';
+        }
+
+        document.getElementById('profileInitial').textContent = user.fullName.charAt(0).toUpperCase();
+
+        document.getElementById('setupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            const profession = document.getElementById('profession').value;
+            const district = document.getElementById('district').value;
+            const hourlyRate = parseFloat(document.getElementById('hourlyRate').value);
+            
+            if (!profession || !district || !hourlyRate) {
+                alert('Please fill all required fields');
+                return;
+            }
+
+            // Add loading animation
+            SuccessAnimations.addLoadingToButton(submitBtn, 'COMPLETING SETUP...');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/workers/${user.userId}/setup`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ profession, district, hourlyRate })
+                });
+
+                if (response.ok) {
+                    // Show success animation
+                    SuccessAnimations.workerSetupCompleted();
+                    
+                    // Redirect after animation
+                    setTimeout(() => {
+                        window.location.href = 'dashboard-worker.html';
+                    }, 3500);
+                } else {
+                    SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                    alert('Failed to complete setup. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error completing setup:', error);
+                SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                alert('Network error. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

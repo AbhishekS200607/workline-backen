@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Details - Workline</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landscape-bg"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            <span>WORKLINE</span>
+        </div>
+        <nav class="nav">
+            <a href="dashboard-user.html">DASHBOARD</a>
+            <a href="booking-page.html">BOOK SERVICE</a>
+            <a href="booking-history.html">MY BOOKINGS</a>
+        </nav>
+        <div class="header-right">
+            <button onclick="goBack()" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; backdrop-filter: blur(10px);">Back to Dashboard</button>
+        </div>
+    </header>
+
+    <main style="margin-top: 80px; background: #F8FAFC; min-height: 100vh; padding: 2rem;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <span id="profileInitial" style="color: white; font-weight: bold; font-size: 2rem;">A</span>
+                    </div>
+                    <h1 style="color: #1A202C; margin-bottom: 0.5rem;">Edit Your Details</h1>
+                    <p style="color: #718096;">Update your contact information</p>
+                </div>
+
+                <form id="editDetailsForm" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div>
+                        <label style="display: block; color: #374151; font-weight: 500; margin-bottom: 0.5rem;">Full Name</label>
+                        <input type="text" id="fullName" readonly style="width: 100%; padding: 0.75rem; border: 2px solid #E5E7EB; border-radius: 8px; background: #F9FAFB; color: #6B7280; cursor: not-allowed;" />
+                    </div>
+
+                    <div>
+                        <label style="display: block; color: #374151; font-weight: 500; margin-bottom: 0.5rem;">Email Address</label>
+                        <input type="email" id="email" readonly style="width: 100%; padding: 0.75rem; border: 2px solid #E5E7EB; border-radius: 8px; background: #F9FAFB; color: #6B7280; cursor: not-allowed;" />
+                    </div>
+
+                    <div>
+                        <label style="display: block; color: #374151; font-weight: 500; margin-bottom: 0.5rem;">Phone Number</label>
+                        <input type="tel" id="phone" required style="width: 100%; padding: 0.75rem; border: 2px solid #D1D5DB; border-radius: 8px; transition: border-color 0.3s;" onfocus="this.style.borderColor='#8B7355'" onblur="this.style.borderColor='#D1D5DB'" />
+                    </div>
+
+                    <div>
+                        <label style="display: block; color: #374151; font-weight: 500; margin-bottom: 0.5rem;">Address</label>
+                        <textarea id="address" rows="3" style="width: 100%; padding: 0.75rem; border: 2px solid #D1D5DB; border-radius: 8px; resize: vertical; transition: border-color 0.3s;" onfocus="this.style.borderColor='#8B7355'" onblur="this.style.borderColor='#D1D5DB'" placeholder="Enter your full address"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button type="button" onclick="goBack()" style="flex: 1; background: #6B7280; color: white; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.3s;" onmouseover="this.style.background='#4B5563'" onmouseout="this.style.background='#6B7280'">Cancel</button>
+                        <button type="submit" style="flex: 1; background: #8B7355; color: white; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.3s;" onmouseover="this.style.background='#6B5B47'" onmouseout="this.style.background='#8B7355'">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/success-animations.js"></script>
+    <script>
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.userId || user.userType !== 'USER') {
+            window.location.href = 'user-auth.html';
+        }
+
+        document.getElementById('profileInitial').textContent = user.fullName.charAt(0).toUpperCase();
+        
+        // Load user data
+        loadUserData();
+
+        async function loadUserData() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/${user.userId}`);
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('fullName').value = userData.fullName;
+                    document.getElementById('email').value = userData.email;
+                    document.getElementById('phone').value = userData.phone;
+                    document.getElementById('address').value = userData.address || '';
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                alert('Error loading user data');
+            }
+        }
+
+        document.getElementById('editDetailsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            
+            if (!phone) {
+                alert('Phone number is required');
+                return;
+            }
+
+            // Add loading animation
+            SuccessAnimations.addLoadingToButton(submitBtn, 'SAVING CHANGES...');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/${user.userId}/details`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, address })
+                });
+
+                if (response.ok) {
+                    // Show success animation
+                    SuccessAnimations.profileUpdated();
+                    
+                    // Redirect after animation
+                    setTimeout(() => {
+                        window.location.href = 'dashboard-user.html';
+                    }, 1500);
+                } else {
+                    SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                    alert('Failed to update details. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error updating details:', error);
+                SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                alert('Network error. Please try again.');
+            }
+        });
+
+        function goBack() {
+            window.location.href = 'dashboard-user.html';
+        }
+    </script>
+</body>
+</html>

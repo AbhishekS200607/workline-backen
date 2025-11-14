@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Workline</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landscape-bg"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            <span>WORKLINE</span>
+        </div>
+        <nav class="nav">
+            <a href="dashboard-user.html">DASHBOARD</a>
+            <a href="booking-page.html">BOOK SERVICE</a>
+            <a href="booking-history.html">MY BOOKINGS</a>
+        </nav>
+        <div class="header-right">
+            <div class="wallet-display" style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; margin-right: 1rem; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 8V6C21 4.89543 20.1046 4 19 4H5C3.89543 4 3 4.89543 3 6V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V16M7 12H17M21 12C21 10.8954 20.1046 10 19 10H17V14H19C20.1046 14 21 13.1046 21 12Z" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span style="color: white; font-weight: 600;">₹<span id="walletBalance">0</span></span>
+            </div>
+            <div class="profile-menu" style="position: relative; display: inline-block;">
+                <div onclick="toggleProfileMenu()" style="display: flex; align-items: center; cursor: pointer; padding: 0.5rem; border-radius: 50px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+                        <span id="profileInitial" style="color: white; font-weight: bold; font-size: 1.1rem;">A</span>
+                    </div>
+                    <span id="userName" style="color: white; margin-right: 0.5rem;">Abhishek</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="transition: transform 0.3s;" id="dropdownArrow">
+                        <path d="M6 9L12 15L18 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                
+                <div id="profileDropdown" style="position: absolute; top: 100%; right: 0; background: white; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15); min-width: 280px; z-index: 1000; display: none; margin-top: 0.5rem;">
+                    <div style="padding: 1.5rem; border-bottom: 1px solid #E2E8F0;">
+                        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                <span style="color: white; font-weight: bold; font-size: 1.2rem;" id="profileInitialLarge">A</span>
+                            </div>
+                            <div>
+                                <h3 style="color: #1A202C; margin-bottom: 0.25rem;" id="profileNameFull">Abhishek S</h3>
+                                <p style="color: #718096; font-size: 0.9rem;">Premium Member</p>
+                            </div>
+                        </div>
+                        <div style="background: #F7FAFC; padding: 1rem; border-radius: 8px;">
+                            <p style="color: #4A5568; font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Email:</strong> <span id="profileEmailDropdown">Loading...</span></p>
+                            <p style="color: #4A5568; font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Phone:</strong> <span id="profilePhoneDropdown">Loading...</span></p>
+                            <p style="color: #4A5568; font-size: 0.9rem;"><strong>Address:</strong> <span id="profileAddressDropdown">Not set</span></p>
+                        </div>
+                        <button onclick="window.location.href='edit-details.html'" style="width: 100%; background: #8B7355; color: white; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; margin-top: 1rem; transition: background 0.3s;" onmouseover="this.style.background='#6B5B47'" onmouseout="this.style.background='#8B7355'">Edit Details</button>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <button onclick="logout()" style="width: 100%; background: #EF4444; color: white; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.3s;" onmouseover="this.style.background='#DC2626'" onmouseout="this.style.background='#EF4444'">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main style="margin-top: 80px; background: #F8FAFC; min-height: 100vh;">
+        <!-- Hero Section -->
+        <div style="background: linear-gradient(135deg, #8B7355 0%, #6B5B47 100%); color: white; padding: 3rem 2rem;">
+            <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 700; animation: fadeInUp 1s ease-out;">Good day, <span id="heroName" style="color: #F59E0B; animation: pulse 2s infinite;"></span>!</h1>
+                    <p id="heroSubtext" style="font-size: 1.2rem; opacity: 0.9; animation: fadeInUp 1s ease-out 0.5s both;">What service do you need today?</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 16px; backdrop-filter: blur(10px);">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin-bottom: 0.5rem;">
+                        <path d="M3 12L5 10L12 3L19 10L21 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M5 12V19C5 19.5523 5.44772 20 6 20H9V16C9 15.4477 9.44772 15 10 15H14C14.5523 15 15 15.4477 15 16V20H18C18.5523 20 19 19.5523 19 19V12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <p style="font-size: 0.9rem;">Premium Services</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+            <!-- Quick Actions -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0; cursor: pointer; transition: all 0.3s;" onclick="window.location.href='booking-page.html'" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M14.7 6.3C15.1 5.9 15.1 5.3 14.7 4.9L19.1 0.5C19.5 0.1 20.1 0.1 20.5 0.5L23.5 3.5C23.9 3.9 23.9 4.5 23.5 4.9L19.1 9.3C18.7 8.9 18.1 8.9 17.7 9.3L14.7 6.3Z" fill="white"/>
+                                <path d="M9.5 11.5L12.5 14.5L5 22H2V19L9.5 11.5Z" fill="white"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 style="color: #1A202C; margin-bottom: 0.25rem;">Book Service</h3>
+                            <p style="color: #718096; font-size: 0.9rem;">Find & book professionals</p>
+                        </div>
+                    </div>
+                    <div style="background: #F7FAFC; padding: 1rem; border-radius: 8px;">
+                        <p style="color: #4A5568; font-size: 0.9rem;">500+ verified professionals ready to help</p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0; cursor: pointer; transition: all 0.3s;" onclick="window.location.href='booking-history.html'" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #4299E1, #3182CE); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M16 4H18C19.1046 4 20 4.89543 20 6V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V6C4 4.89543 4.89543 4 6 4H8" stroke="white" stroke-width="2"/>
+                                <rect x="8" y="2" width="8" height="4" rx="1" stroke="white" stroke-width="2"/>
+                                <path d="M9 12L11 14L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 style="color: #1A202C; margin-bottom: 0.25rem;">My Bookings</h3>
+                            <p style="color: #718096; font-size: 0.9rem;">Track your services</p>
+                        </div>
+                    </div>
+                    <div style="background: #EBF8FF; padding: 1rem; border-radius: 8px;">
+                        <p id="bookingCount" style="color: #2B6CB0; font-size: 0.9rem;">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Categories -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0; margin-bottom: 3rem;">
+                <h2 style="color: #1A202C; margin-bottom: 1.5rem; font-size: 1.5rem;">Popular Services</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="padding: 1.5rem; border: 2px solid #E2E8F0; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s;" onclick="window.location.href='booking-page.html?profession=Plumber'" onmouseover="this.style.borderColor='#8B7355'; this.style.backgroundColor='#F7FAFC'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.backgroundColor='white'">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin: 0 auto 0.5rem;">
+                            <path d="M14.7 6.3C15.1 5.9 15.1 5.3 14.7 4.9L19.1 0.5C19.5 0.1 20.1 0.1 20.5 0.5L23.5 3.5C23.9 3.9 23.9 4.5 23.5 4.9L19.1 9.3C18.7 8.9 18.1 8.9 17.7 9.3L14.7 6.3Z" fill="#8B7355"/>
+                            <path d="M9.5 11.5L12.5 14.5L5 22H2V19L9.5 11.5Z" fill="#8B7355"/>
+                        </svg>
+                        <h4 style="color: #1A202C; margin-bottom: 0.25rem;">Plumbing</h4>
+                        <p style="color: #718096; font-size: 0.8rem;">Repairs & Installation</p>
+                    </div>
+                    <div style="padding: 1.5rem; border: 2px solid #E2E8F0; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s;" onclick="window.location.href='booking-page.html?profession=Electrician'" onmouseover="this.style.borderColor='#8B7355'; this.style.backgroundColor='#F7FAFC'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.backgroundColor='white'">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin: 0 auto 0.5rem;">
+                            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="#F59E0B" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                        <h4 style="color: #1A202C; margin-bottom: 0.25rem;">Electrical</h4>
+                        <p style="color: #718096; font-size: 0.8rem;">Wiring & Fixtures</p>
+                    </div>
+                    <div style="padding: 1.5rem; border: 2px solid #E2E8F0; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s;" onclick="window.location.href='booking-page.html?profession=Carpenter'" onmouseover="this.style.borderColor='#8B7355'; this.style.backgroundColor='#F7FAFC'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.backgroundColor='white'">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin: 0 auto 0.5rem;">
+                            <path d="M8.5 8.5L15.5 15.5" stroke="#8B4513" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M16 8L8 16" stroke="#8B4513" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="9" cy="9" r="2" stroke="#8B4513" stroke-width="2"/>
+                            <path d="M21 15L15 21L12 18L18 12L21 15Z" fill="#8B4513"/>
+                        </svg>
+                        <h4 style="color: #1A202C; margin-bottom: 0.25rem;">Carpentry</h4>
+                        <p style="color: #718096; font-size: 0.8rem;">Furniture & Repairs</p>
+                    </div>
+                    <div style="padding: 1.5rem; border: 2px solid #E2E8F0; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s;" onclick="window.location.href='booking-page.html?profession=Cleaner'" onmouseover="this.style.borderColor='#8B7355'; this.style.backgroundColor='#F7FAFC'" onmouseout="this.style.borderColor='#E2E8F0'; this.style.backgroundColor='white'">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin: 0 auto 0.5rem;">
+                            <path d="M3 12H21M12 3V21" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M8 8L16 16M16 8L8 16" stroke="#10B981" stroke-width="1" stroke-linecap="round"/>
+                            <circle cx="12" cy="12" r="9" stroke="#10B981" stroke-width="2"/>
+                        </svg>
+                        <h4 style="color: #1A202C; margin-bottom: 0.25rem;">Cleaning</h4>
+                        <p style="color: #718096; font-size: 0.8rem;">Deep & Regular Clean</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0;">
+                <h2 style="color: #1A202C; margin-bottom: 1.5rem; font-size: 1.5rem;">Recent Activity</h2>
+                <div id="recentBookings">
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+                        <p>Loading your recent activity...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes typewriter {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typewriter 2s steps(40) 1s both;
+        }
+    </style>
+    
+    <script src="js/config.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        // Check if user is logged in
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.userId || user.userType !== 'USER') {
+            window.location.href = 'user-auth.html';
+        }
+        
+        document.getElementById('userName').textContent = user.fullName;
+        document.getElementById('heroName').textContent = user.fullName;
+        document.getElementById('profileInitial').textContent = user.fullName.charAt(0).toUpperCase();
+        document.getElementById('profileInitialLarge').textContent = user.fullName.charAt(0).toUpperCase();
+        document.getElementById('profileNameFull').textContent = user.fullName;
+        
+        // Add typewriter effect to subtitle
+        setTimeout(() => {
+            document.getElementById('heroSubtext').classList.add('typewriter');
+        }, 1500);
+        
+        // Load full user profile and recent activity
+        loadUserProfile();
+        loadRecentBookings();
+        loadBookingCount();
+        loadPendingReviews();
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const profileMenu = document.querySelector('.profile-menu');
+            if (!profileMenu.contains(event.target)) {
+                document.getElementById('profileDropdown').style.display = 'none';
+                document.getElementById('dropdownArrow').style.transform = 'rotate(0deg)';
+            }
+        });
+        
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        
+        // Load user profile from API
+        async function loadUserProfile() {
+            try {
+                console.log('Loading profile for user ID:', user.userId);
+                const response = await fetch(`${API_BASE_URL}/users/${user.userId}`);
+                console.log('Profile response status:', response.status);
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    console.log('User data loaded:', userData);
+                    document.getElementById('profileEmailDropdown').textContent = userData.email;
+                    document.getElementById('profilePhoneDropdown').textContent = userData.phone;
+                    document.getElementById('profileAddressDropdown').textContent = userData.address || 'Not set';
+                    document.getElementById('walletBalance').textContent = userData.walletBalance || '0';
+                } else {
+                    console.error('Failed to load user profile:', response.status, response.statusText);
+                    document.getElementById('profileEmailDropdown').textContent = 'Not available';
+                    document.getElementById('profilePhoneDropdown').textContent = 'Not available';
+                    document.getElementById('profileAddressDropdown').textContent = 'Not available';
+                    document.getElementById('walletBalance').textContent = '0';
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                document.getElementById('profileEmailDropdown').textContent = 'Error loading';
+                document.getElementById('profilePhoneDropdown').textContent = 'Error loading';
+                document.getElementById('profileAddressDropdown').textContent = 'Error loading';
+                document.getElementById('walletBalance').textContent = '0';
+            }
+        }
+        
+        // Toggle profile dropdown
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profileDropdown');
+            const arrow = document.getElementById('dropdownArrow');
+            
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                dropdown.style.display = 'block';
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                dropdown.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        async function loadPendingReviews() {
+            try {
+                console.log('Checking for pending reviews...');
+                const response = await fetch(`${API_BASE_URL}/bookings/user/${user.userId}/pending-reviews`);
+                if (response.ok) {
+                    const pendingReviews = await response.json();
+                    console.log('Pending reviews found:', pendingReviews.length);
+                    if (pendingReviews.length > 0) {
+                        console.log('Showing review modal for booking:', pendingReviews[0].id);
+                        showReviewModal(pendingReviews[0]);
+                    } else {
+                        console.log('No pending reviews found');
+                    }
+                } else {
+                    console.error('Failed to load pending reviews:', response.status);
+                }
+            } catch (error) {
+                console.error('Error loading pending reviews:', error);
+            }
+        }
+        
+        function showReviewModal(booking) {
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 1000;';
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 2rem; border-radius: 16px; max-width: 400px; width: 90%;">
+                    <h3 style="color: #8B7355; margin-bottom: 1rem;">Rate Your Service</h3>
+                    <p style="margin-bottom: 1rem;">How was your experience with <strong>${booking.worker.fullName}</strong>?</p>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;" id="starRating">
+                            <span onclick="setRating(1)" style="font-size: 2rem; cursor: pointer; color: #E5E7EB;">★</span>
+                            <span onclick="setRating(2)" style="font-size: 2rem; cursor: pointer; color: #E5E7EB;">★</span>
+                            <span onclick="setRating(3)" style="font-size: 2rem; cursor: pointer; color: #E5E7EB;">★</span>
+                            <span onclick="setRating(4)" style="font-size: 2rem; cursor: pointer; color: #E5E7EB;">★</span>
+                            <span onclick="setRating(5)" style="font-size: 2rem; cursor: pointer; color: #E5E7EB;">★</span>
+                        </div>
+                        <textarea placeholder="Share your experience..." style="width: 100%; padding: 0.75rem; border: 2px solid #E5E7EB; border-radius: 8px; resize: none;" rows="3" id="reviewComment"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <button onclick="closeModal()" style="flex: 1; background: #6B7280; color: white; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer;">Skip</button>
+                        <button onclick="submitReview(${booking.id})" style="flex: 1; background: #8B7355; color: white; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer;">Submit</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        let selectedRating = 0;
+        
+        function closeModal() {
+            const modal = document.querySelector('[style*="position: fixed"]');
+            if (modal) modal.remove();
+        }
+        
+        function setRating(rating) {
+            selectedRating = rating;
+            const stars = document.querySelectorAll('#starRating span');
+            stars.forEach((star, index) => {
+                star.style.color = index < rating ? '#F59E0B' : '#E5E7EB';
+            });
+        }
+        
+        async function submitReview(bookingId) {
+            if (selectedRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/reviews`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bookingId: bookingId,
+                        rating: selectedRating,
+                        comment: document.getElementById('reviewComment').value
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Thank you for your review!');
+                    closeModal();
+                    loadPendingReviews();
+                } else {
+                    alert('Failed to submit review');
+                }
+            } catch (error) {
+                alert('Error submitting review');
+            }
+        }
+        
+
+        
+        // Load booking count
+        async function loadBookingCount() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings/user/${user.userId}`);
+                if (response.ok) {
+                    const bookings = await response.json();
+                    const count = bookings.length;
+                    document.getElementById('bookingCount').textContent = count === 0 ? 'No bookings yet' : `${count} booking${count > 1 ? 's' : ''} total`;
+                } else {
+                    document.getElementById('bookingCount').textContent = 'Unable to load';
+                }
+            } catch (error) {
+                document.getElementById('bookingCount').textContent = 'Error loading';
+            }
+        }
+        
+        // Load recent bookings
+        async function loadRecentBookings() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings/user/${user.userId}`);
+                if (response.ok) {
+                    const bookings = await response.json();
+                    displayRecentActivity(bookings.slice(0, 3)); // Show last 3 bookings
+                } else {
+                    document.getElementById('recentBookings').innerHTML = '<p style="text-align: center; color: #718096;">No recent activity</p>';
+                }
+            } catch (error) {
+                document.getElementById('recentBookings').innerHTML = '<p style="text-align: center; color: #718096;">Error loading activity</p>';
+            }
+        }
+        
+        function displayRecentActivity(bookings) {
+            const container = document.getElementById('recentBookings');
+            
+            if (bookings.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style="margin-bottom: 1rem;">
+                            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="#F59E0B"/>
+                            <path d="M19 12L20.09 15.26L24 16L20.09 16.74L19 20L17.91 16.74L14 16L17.91 15.26L19 12Z" fill="#F59E0B"/>
+                            <path d="M5 6L5.5 7.5L7 8L5.5 8.5L5 10L4.5 8.5L3 8L4.5 7.5L5 6Z" fill="#F59E0B"/>
+                        </svg>
+                        <p>No bookings yet. Book your first service!</p>
+                        <a href="booking-page.html" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #8B7355; color: white; text-decoration: none; border-radius: 8px;">Book Now</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = bookings.map(booking => `
+                <div style="display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid #E2E8F0; last-child:border-bottom: none;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                        <span style="color: white; font-weight: bold;">${booking.worker.fullName.charAt(0)}</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <h4 style="color: #1A202C; margin-bottom: 0.25rem;">${booking.worker.fullName}</h4>
+                        <p style="color: #718096; font-size: 0.9rem;">${booking.worker.profession} • ${new Date(booking.bookingDate).toLocaleDateString()}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="
+                            padding: 0.25rem 0.75rem; 
+                            border-radius: 12px; 
+                            font-size: 0.8rem; 
+                            font-weight: 500;
+                            background: ${booking.status === 'CONFIRMED' ? '#D1FAE5' : booking.status === 'COMPLETED' ? '#FEF3C7' : '#DBEAFE'};
+                            color: ${booking.status === 'CONFIRMED' ? '#065F46' : booking.status === 'COMPLETED' ? '#92400E' : '#1E40AF'};
+                        ">${booking.status}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

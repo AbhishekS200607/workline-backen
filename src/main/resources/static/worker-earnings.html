@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earnings - Workline</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landscape-bg"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            <span>WORKLINE</span>
+        </div>
+        <nav class="nav">
+            <a href="dashboard-worker.html">DASHBOARD</a>
+            <a href="worker-bookings.html">MY BOOKINGS</a>
+            <a href="worker-earnings.html" style="color: #F59E0B;">EARNINGS</a>
+        </nav>
+        <div class="header-right">
+            <button onclick="window.location.href='dashboard-worker.html'" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; backdrop-filter: blur(10px);">Back to Dashboard</button>
+        </div>
+    </header>
+
+    <main style="margin-top: 80px; background: #F8FAFC; min-height: 100vh; padding: 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="margin-bottom: 2rem;">
+                <h1 style="color: #1A202C; font-size: 2rem; margin-bottom: 0.5rem;">Earnings Overview</h1>
+                <p style="color: #718096;">Track your income and financial performance</p>
+            </div>
+
+            <!-- Earnings Summary Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div style="background: linear-gradient(135deg, #10B981, #059669); color: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin-right: 1rem;">
+                            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="white"/>
+                        </svg>
+                        <h3 style="margin: 0;">Total Earnings</h3>
+                    </div>
+                    <p style="font-size: 2rem; font-weight: bold; margin: 0;">₹<span id="totalEarnings">0</span></p>
+                    <p style="opacity: 0.8; margin-top: 0.5rem;">All time earnings</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #3B82F6, #1D4ED8); color: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin-right: 1rem;">
+                            <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="white" stroke-width="2"/>
+                        </svg>
+                        <h3 style="margin: 0;">This Month</h3>
+                    </div>
+                    <p style="font-size: 2rem; font-weight: bold; margin: 0;">₹<span id="monthlyEarnings">0</span></p>
+                    <p style="opacity: 0.8; margin-top: 0.5rem;"><span id="monthlyJobs">0</span> jobs completed</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #F59E0B, #D97706); color: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="margin-right: 1rem;">
+                            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="white"/>
+                        </svg>
+                        <h3 style="margin: 0;">Average Per Job</h3>
+                    </div>
+                    <p style="font-size: 2rem; font-weight: bold; margin: 0;">₹<span id="avgPerJob">0</span></p>
+                    <p style="opacity: 0.8; margin-top: 0.5rem;">Per completed job</p>
+                </div>
+            </div>
+
+            <!-- Monthly Breakdown -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0; margin-bottom: 3rem;">
+                <h2 style="color: #1A202C; margin-bottom: 1.5rem; font-size: 1.5rem;">Monthly Breakdown</h2>
+                <div id="monthlyBreakdown">
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <p>Loading monthly breakdown...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Earnings -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0;">
+                <h2 style="color: #1A202C; margin-bottom: 1.5rem; font-size: 1.5rem;">Recent Earnings</h2>
+                <div id="recentEarnings">
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
+                        <p>Loading recent earnings...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script>
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.userId || user.userType !== 'WORKER') {
+            window.location.href = 'worker-auth.html';
+        }
+
+        // Load earnings data on page load
+        loadEarningsData();
+
+        async function loadEarningsData() {
+            try {
+                // Load worker profile for total earnings
+                const workerResponse = await fetch(`${API_BASE_URL}/workers/${user.userId}`);
+                if (workerResponse.ok) {
+                    const workerData = await workerResponse.json();
+                    document.getElementById('totalEarnings').textContent = workerData.totalEarnings || '0';
+                }
+
+                // Load bookings for detailed earnings
+                const bookingsResponse = await fetch(`${API_BASE_URL}/bookings/worker/${user.userId}`);
+                if (bookingsResponse.ok) {
+                    const bookings = await bookingsResponse.json();
+                    calculateEarnings(bookings);
+                    displayRecentEarnings(bookings);
+                    displayMonthlyBreakdown(bookings);
+                }
+            } catch (error) {
+                console.error('Error loading earnings data:', error);
+            }
+        }
+
+        function calculateEarnings(bookings) {
+            const completedBookings = bookings.filter(b => b.status === 'COMPLETED');
+            const thisMonth = new Date().getMonth();
+            const thisYear = new Date().getFullYear();
+            
+            // Monthly earnings
+            const monthlyBookings = completedBookings.filter(b => {
+                const bookingDate = new Date(b.bookingDate);
+                return bookingDate.getMonth() === thisMonth && bookingDate.getFullYear() === thisYear;
+            });
+            
+            const monthlyTotal = monthlyBookings.reduce((total, booking) => total + (booking.totalAmount || 0), 0);
+            document.getElementById('monthlyEarnings').textContent = monthlyTotal;
+            document.getElementById('monthlyJobs').textContent = monthlyBookings.length;
+            
+            // Average per job
+            const avgPerJob = completedBookings.length > 0 ? 
+                completedBookings.reduce((total, booking) => total + (booking.totalAmount || 0), 0) / completedBookings.length : 0;
+            document.getElementById('avgPerJob').textContent = Math.round(avgPerJob);
+        }
+
+        function displayRecentEarnings(bookings) {
+            const container = document.getElementById('recentEarnings');
+            const completedBookings = bookings
+                .filter(b => b.status === 'COMPLETED' && b.totalAmount > 0)
+                .sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate))
+                .slice(0, 10);
+
+            if (completedBookings.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
+                        <p>No earnings yet. Complete your first job to start earning!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = completedBookings.map(booking => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #E2E8F0;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10B981, #059669); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <span style="color: white; font-weight: bold;">${booking.user.fullName.charAt(0)}</span>
+                        </div>
+                        <div>
+                            <h4 style="color: #1A202C; margin-bottom: 0.25rem;">${booking.user.fullName}</h4>
+                            <p style="color: #718096; font-size: 0.9rem;">${new Date(booking.bookingDate).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="color: #10B981; font-weight: bold; font-size: 1.1rem;">+₹${booking.totalAmount}</p>
+                        <p style="color: #718096; font-size: 0.8rem;">Completed</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayMonthlyBreakdown(bookings) {
+            const container = document.getElementById('monthlyBreakdown');
+            const completedBookings = bookings.filter(b => b.status === 'COMPLETED');
+            
+            // Group by month
+            const monthlyData = {};
+            const currentYear = new Date().getFullYear();
+            
+            completedBookings.forEach(booking => {
+                const date = new Date(booking.bookingDate);
+                if (date.getFullYear() === currentYear) {
+                    const monthKey = date.toLocaleString('default', { month: 'long' });
+                    if (!monthlyData[monthKey]) {
+                        monthlyData[monthKey] = { earnings: 0, jobs: 0 };
+                    }
+                    monthlyData[monthKey].earnings += booking.totalAmount || 0;
+                    monthlyData[monthKey].jobs += 1;
+                }
+            });
+
+            const months = Object.keys(monthlyData);
+            if (months.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <p>No earnings data available for this year</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    ${months.map(month => `
+                        <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 1rem; text-align: center;">
+                            <h4 style="color: #1A202C; margin-bottom: 0.5rem;">${month}</h4>
+                            <p style="color: #10B981; font-size: 1.2rem; font-weight: bold; margin-bottom: 0.25rem;">₹${monthlyData[month].earnings}</p>
+                            <p style="color: #718096; font-size: 0.9rem;">${monthlyData[month].jobs} jobs</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

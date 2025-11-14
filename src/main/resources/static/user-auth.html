@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login & Register - Workline</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landscape-bg"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            <span>WORKLINE</span>
+        </div>
+        <div class="header-right">
+            <a href="index.html" class="contact-btn">BACK TO HOME</a>
+        </div>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="showLogin()">LOGIN</button>
+                <button class="tab-btn" onclick="showRegister()">REGISTER</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginSection">
+                <h1>Welcome Back</h1>
+                <p>Sign in to your account</p>
+                
+                <form id="loginForm" class="auth-form">
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit" class="cta-btn">SIGN IN</button>
+                </form>
+            </div>
+            
+            <!-- Register Form -->
+            <div id="registerSection" style="display: none;">
+                <h1>Create Account</h1>
+                <p>Join Workline for premium home services</p>
+                
+                <form id="registerForm" class="auth-form">
+                    <input type="text" name="fullName" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="tel" name="phone" placeholder="Phone Number" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit" class="cta-btn">CREATE ACCOUNT</button>
+                </form>
+            </div>
+            
+            <div class="auth-links">
+                <p>Are you a service provider? <a href="worker-auth.html">Join as Worker</a></p>
+            </div>
+        </div>
+    </main>
+
+
+
+    <script src="js/config.js"></script>
+    <script src="js/success-animations.js"></script>
+    <script>
+        function showLogin() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('registerSection').style.display = 'none';
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.remove('active');
+        }
+        
+        function showRegister() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('registerSection').style.display = 'block';
+            document.querySelectorAll('.tab-btn')[0].classList.remove('active');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        }
+        
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            // Add loading animation
+            SuccessAnimations.addLoadingToButton(submitBtn, 'SIGNING IN...');
+            
+            const formData = new FormData(e.target);
+            const credentials = {
+                email: formData.get('email'),
+                password: formData.get('password')
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(credentials)
+                });
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    if (user.userType === 'USER') {
+                        localStorage.setItem('user', JSON.stringify(user));
+                        
+                        // Show success animation
+                        SuccessAnimations.loginSuccess(user.fullName);
+                        
+                        // Redirect after animation
+                        setTimeout(() => {
+                            window.location.href = 'dashboard-user.html';
+                        }, 1500);
+                    } else {
+                        SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                        alert('Please use worker login page.');
+                    }
+                } else {
+                    SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                    alert('Invalid credentials.');
+                }
+            } catch (error) {
+                SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                alert('Network error. Please try again.');
+            }
+        });
+        
+        // Register
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            // Add loading animation
+            SuccessAnimations.addLoadingToButton(submitBtn, 'CREATING ACCOUNT...');
+            
+            const formData = new FormData(e.target);
+            const user = {
+                fullName: formData.get('fullName'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                password: formData.get('password')
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register/user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
+                });
+                
+                if (response.ok) {
+                    // Show success animation
+                    SuccessAnimations.accountCreated('user');
+                    
+                    // Switch to login after animation
+                    setTimeout(() => {
+                        showLogin();
+                        SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                    }, 3000);
+                } else {
+                    SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                    alert('Registration failed. Email may already exist.');
+                }
+            } catch (error) {
+                SuccessAnimations.removeLoadingFromButton(submitBtn, originalText);
+                alert('Network error. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workline - Premium Home Services</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landscape-bg"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            <span>WORKLINE</span>
+        </div>
+        <nav class="nav">
+            <a href="#services">SERVICES</a>
+            <a href="#workers">WORKERS</a>
+            <a href="#about">ABOUT US</a>
+        </nav>
+        <div class="header-right">
+            <span class="lang">ENG</span>
+            <a href="user-auth.html" class="nav-link">USER LOGIN</a>
+            <a href="worker-auth.html" class="contact-btn">JOIN US</a>
+        </div>
+    </header>
+
+    <main class="hero">
+        <div class="hero-content">
+            <div class="hero-left">
+                <h1 class="hero-title">
+                    <span>THE</span>
+                    <span>PERFECT</span>
+                    <span>SERVICE®</span>
+                </h1>
+                <p class="hero-subtitle">/ Premium home services at your doorstep /</p>
+                <div class="trust-badges">
+                    <span class="badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 12l2 2 4-4"/>
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                        VERIFIED
+                    </span>
+                    <span class="badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        TOP RATED
+                    </span>
+                    <span class="badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9H4.5a2.5 2.5 0 010-5H6"/>
+                            <path d="M18 9h1.5a2.5 2.5 0 000-5H18"/>
+                            <path d="M4 22h16"/>
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                            <path d="M18 2H6v7a6 6 0 0012 0V2z"/>
+                        </svg>
+                        PREMIUM
+                    </span>
+                </div>
+                <button class="cta-btn" onclick="scrollToServices()">BOOK SERVICE NOW</button>
+            </div>
+            <div class="hero-right">
+                <div class="service-card">
+                    <div class="card-tabs">
+                        <span class="tab">Quality</span>
+                        <span class="tab active">Verified</span>
+                        <span class="tab">Premium</span>
+                    </div>
+                    <h3>Expert professionals</h3>
+                    <p>From consultation to completion.</p>
+                    <div class="quick-stats">
+                        <div class="stat"><strong>500+</strong> Workers</div>
+                        <div class="stat"><strong>4.8★</strong> Rating</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Service Categories Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Premium Services</h2>
+                <p>Professional home services with verified experts</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-category" onclick="bookService('Plumber')">
+                    <div class="service-icon">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#8B7355" stroke-width="2">
+                            <path d="M14 7l-5 5 5 5"/>
+                            <path d="M21 12H9"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </div>
+                    <h3>Plumbing</h3>
+                    <p>Pipe repairs, installations, leak fixes</p>
+                    <span class="service-price">From ₹300/hr</span>
+                </div>
+                <div class="service-category" onclick="bookService('Electrician')">
+                    <div class="service-icon">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#8B7355" stroke-width="2">
+                            <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"/>
+                        </svg>
+                    </div>
+                    <h3>Electrical</h3>
+                    <p>Wiring, repairs, appliance installation</p>
+                    <span class="service-price">From ₹400/hr</span>
+                </div>
+                <div class="service-category" onclick="bookService('Carpenter')">
+                    <div class="service-icon">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#8B7355" stroke-width="2">
+                            <path d="M6 2l3 6v7a1 1 0 01-1 1H4a1 1 0 01-1-1V8l3-6z"/>
+                            <path d="M18 2l3 6v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V8l3-6z"/>
+                            <path d="M6 16h12"/>
+                        </svg>
+                    </div>
+                    <h3>Carpentry</h3>
+                    <p>Furniture repair, custom woodwork</p>
+                    <span class="service-price">From ₹350/hr</span>
+                </div>
+                <div class="service-category" onclick="bookService('Cleaner')">
+                    <div class="service-icon">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#8B7355" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 12l2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3>Cleaning</h3>
+                    <p>Deep cleaning, maintenance, sanitization</p>
+                    <span class="service-price">From ₹250/hr</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Workers Section -->
+    <section id="workers" class="workers-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Top Rated Professionals</h2>
+                <p>Meet our verified experts with excellent customer reviews</p>
+            </div>
+            
+            <div class="feature-boxes">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M9 12l2 2 4-4"/>
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                    </div>
+                    <h3>Verified Professionals</h3>
+                    <p>Background checked & certified</p>
+                </div>
+                <div class="feature-box">
+                    <h3 class="large-number">500+</h3>
+                    <div class="avatars">
+                        <div class="avatar"></div>
+                        <div class="avatar"></div>
+                        <div class="avatar"></div>
+                    </div>
+                    <p>Trusted Workers</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <h3>4.8 Average Rating</h3>
+                    <p>Highly rated by customers</p>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <div class="location-filter">
+                    <select id="district" onchange="filterWorkers()">
+                        <option value="">All Districts</option>
+                        <option value="Alappuzha">Alappuzha</option>
+                        <option value="Kottayam">Kottayam</option>
+                        <option value="Ernakulam">Ernakulam</option>
+                    </select>
+                    <select id="profession" onchange="filterWorkers()">
+                        <option value="">All Services</option>
+                        <option value="Plumber">Plumber</option>
+                        <option value="Electrician">Electrician</option>
+                        <option value="Carpenter">Carpenter</option>
+                        <option value="Cleaner">Cleaner</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="workers-grid" class="workers-grid">
+                <!-- Workers will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Why Choose Workline?</h2>
+                    <p>We connect you with Kerala's most trusted home service professionals. Every worker is verified, rated, and committed to delivering premium quality service.</p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <span class="feature-number">01</span>
+                            <div>
+                                <h4>Verified Professionals</h4>
+                                <p>Background checked and skill verified</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <span class="feature-number">02</span>
+                            <div>
+                                <h4>Transparent Pricing</h4>
+                                <p>No hidden charges, pay what you see</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <span class="feature-number">03</span>
+                            <div>
+                                <h4>Quality Guarantee</h4>
+                                <p>100% satisfaction or money back</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <h3>500+</h3>
+                        <p>Verified Workers</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>10K+</h3>
+                        <p>Happy Customers</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>4.8★</h3>
+                        <p>Average Rating</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Help Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Need Help?</h2>
+                    <p>Our customer support team is here to assist you 24/7</p>
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Call Us</h4>
+                                <p>+91 9876543210</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Email Support</h4>
+                                <p>support@workline.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Live Chat</h4>
+                                <p>Available 24/7</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-section">
+                    <h3>Frequently Asked Questions</h3>
+                    <div class="faq-item">
+                        <h4>How do I book a service?</h4>
+                        <p>Simply select a service category, choose your preferred professional, and book instantly.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>Are all workers verified?</h4>
+                        <p>Yes, all our professionals are background-checked and skill-verified for your safety.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>What payment methods do you accept?</h4>
+                        <p>We accept all major payment methods including UPI, cards, and cash on service.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">W</div>
+                        <span>WORKLINE</span>
+                    </div>
+                    <p>Premium home services at your doorstep</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Services</h4>
+                        <a href="services/plumbing.html">Plumbing</a>
+                        <a href="services/electrical.html">Electrical</a>
+                        <a href="services/carpentry.html">Carpentry</a>
+                        <a href="services/cleaning.html">Cleaning</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="company/about.html">About Us</a>
+                        <a href="company/careers.html">Careers</a>
+                        <a href="company/privacy.html">Privacy Policy</a>
+                        <a href="company/terms.html">Terms of Service</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="support/help.html">Help Center</a>
+                        <a href="support/contact.html">Contact Us</a>
+                        <a href="support/safety.html">Safety</a>
+                        <a href="support/safety.html">Trust & Safety</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Workline. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+</html>

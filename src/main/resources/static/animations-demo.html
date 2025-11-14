@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>Success Animations Demo - Workline</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landscape-bg"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            <span>WORKLINE</span>
+        </div>
+        <div class="header-right">
+            <a href="index.html" class="contact-btn">BACK TO HOME</a>
+        </div>
+    </header>
+
+    <main style="margin-top: 100px; padding: 2rem;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h1 style="font-family: 'Playfair Display', serif; color: #8B7355; margin-bottom: 1rem;">Success Animations Demo</h1>
+                <p style="color: #6B7280;">Test all the beautiful success animations used throughout Workline</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- Authentication Animations -->
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #8B7355; margin-bottom: 1rem;">Authentication</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <button onclick="SuccessAnimations.accountCreated('user')" class="cta-btn">Account Created (User)</button>
+                        <button onclick="SuccessAnimations.accountCreated('worker')" class="cta-btn">Account Created (Worker)</button>
+                        <button onclick="SuccessAnimations.loginSuccess('John Doe')" class="cta-btn">Login Success</button>
+                    </div>
+                </div>
+
+                <!-- Booking Animations -->
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #8B7355; margin-bottom: 1rem;">Booking & Payment</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <button onclick="SuccessAnimations.bookingConfirmed('John Smith', 'Plumbing')" class="cta-btn">Booking Confirmed</button>
+                        <button onclick="SuccessAnimations.paymentCompleted(500, 'Google Pay')" class="cta-btn">Payment Completed</button>
+                    </div>
+                </div>
+
+                <!-- Status Updates -->
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #8B7355; margin-bottom: 1rem;">Status Updates</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <button onclick="SuccessAnimations.bookingStatusUpdated('CONFIRMED')" class="cta-btn">Booking Confirmed</button>
+                        <button onclick="SuccessAnimations.bookingStatusUpdated('COMPLETED')" class="cta-btn">Service Completed</button>
+                        <button onclick="SuccessAnimations.bookingStatusUpdated('CANCELLED')" class="cta-btn">Booking Cancelled</button>
+                    </div>
+                </div>
+
+                <!-- Profile & Setup -->
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #8B7355; margin-bottom: 1rem;">Profile & Setup</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <button onclick="SuccessAnimations.profileUpdated()" class="cta-btn">Profile Updated</button>
+                        <button onclick="SuccessAnimations.workerSetupCompleted()" class="cta-btn">Worker Setup Complete</button>
+                        <button onclick="SuccessAnimations.reviewSubmitted()" class="cta-btn">Review Submitted</button>
+                    </div>
+                </div>
+
+                <!-- Custom Messages -->
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #8B7355; margin-bottom: 1rem;">Custom Messages</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <button onclick="SuccessAnimations.showSuccessToast('🎉 Custom success message!')" class="cta-btn">Success Toast</button>
+                        <button onclick="SuccessAnimations.showSuccessToast('💳 Payment processed!', 'payment')" class="cta-btn">Payment Toast</button>
+                        <button onclick="SuccessAnimations.showSuccessOverlay('Custom Success!', 'This is a custom overlay message')" class="cta-btn">Success Overlay</button>
+                    </div>
+                </div>
+
+                <!-- Loading Demo -->
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #8B7355; margin-bottom: 1rem;">Loading Animation</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <button id="loadingDemo" onclick="demoLoading()" class="cta-btn">Demo Loading Button</button>
+                        <p style="color: #6B7280; font-size: 0.9rem;">Click to see loading animation, then success message</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 16px; backdrop-filter: blur(10px);">
+                <h3 style="color: #8B7355; margin-bottom: 1rem;">Animation Features</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: left;">
+                    <div>
+                        <h4 style="color: #374151; margin-bottom: 0.5rem;">✨ Smooth Animations</h4>
+                        <p style="color: #6B7280; font-size: 0.9rem;">CSS3 transitions and keyframes</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #374151; margin-bottom: 0.5rem;">📱 Mobile Responsive</h4>
+                        <p style="color: #6B7280; font-size: 0.9rem;">Adapts to different screen sizes</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #374151; margin-bottom: 0.5rem;">🎯 Context Aware</h4>
+                        <p style="color: #6B7280; font-size: 0.9rem;">Different animations for different actions</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #374151; margin-bottom: 0.5rem;">⚡ Lightweight</h4>
+                        <p style="color: #6B7280; font-size: 0.9rem;">Pure CSS and vanilla JavaScript</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/success-animations.js"></script>
+    <script>
+        function demoLoading() {
+            const btn = document.getElementById('loadingDemo');
+            const originalText = btn.textContent;
+            
+            SuccessAnimations.addLoadingToButton(btn, 'PROCESSING...');
+            
+            setTimeout(() => {
+                SuccessAnimations.removeLoadingFromButton(btn, originalText);
+                SuccessAnimations.showSuccessToast('✅ Process completed successfully!');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

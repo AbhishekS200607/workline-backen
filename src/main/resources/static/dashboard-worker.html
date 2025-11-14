@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Dashboard - Workline</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landscape-bg"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            <span>WORKLINE</span>
+        </div>
+        <nav class="nav">
+            <a href="dashboard-worker.html">DASHBOARD</a>
+            <a href="worker-bookings.html">MY BOOKINGS</a>
+            <a href="worker-earnings.html">EARNINGS</a>
+        </nav>
+        <div class="header-right">
+            <div class="earnings-display" style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; margin-right: 1rem; backdrop-filter: blur(10px);">
+                <span style="color: #F59E0B; font-weight: bold;">₹</span>
+                <span id="totalEarnings" style="color: white; font-weight: 600;">0</span>
+            </div>
+            <div class="profile-menu" style="position: relative; display: inline-block;">
+                <div onclick="toggleProfileMenu()" style="display: flex; align-items: center; cursor: pointer; padding: 0.5rem; border-radius: 50px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+                        <span id="profileInitial" style="color: white; font-weight: bold; font-size: 1.1rem;">W</span>
+                    </div>
+                    <div style="text-align: left; margin-right: 0.5rem;">
+                        <div id="workerName" style="color: white; font-weight: 500; font-size: 0.9rem;">Worker</div>
+                        <div style="display: flex; align-items: center;">
+                            <span style="color: #F59E0B; font-size: 0.8rem;">★</span>
+                            <span id="workerRating" style="color: white; font-size: 0.8rem; margin-left: 0.25rem;">0.0</span>
+                        </div>
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="transition: transform 0.3s;" id="dropdownArrow">
+                        <path d="M6 9L12 15L18 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                
+                <div id="profileDropdown" style="position: absolute; top: 100%; right: 0; background: white; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15); min-width: 300px; z-index: 1000; display: none; margin-top: 0.5rem;">
+                    <div style="padding: 1.5rem; border-bottom: 1px solid #E2E8F0;">
+                        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                <span style="color: white; font-weight: bold; font-size: 1.2rem;" id="profileInitialLarge">W</span>
+                            </div>
+                            <div>
+                                <h3 style="color: #1A202C; margin-bottom: 0.25rem;" id="profileNameFull">Worker Name</h3>
+                                <p style="color: #718096; font-size: 0.9rem;" id="workerProfession">Professional</p>
+                            </div>
+                        </div>
+                        <div style="background: #F7FAFC; padding: 1rem; border-radius: 8px;">
+                            <p style="color: #4A5568; font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Email:</strong> <span id="profileEmailDropdown">Loading...</span></p>
+                            <p style="color: #4A5568; font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Phone:</strong> <span id="profilePhoneDropdown">Loading...</span></p>
+                            <p style="color: #4A5568; font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>District:</strong> <span id="profileDistrictDropdown">Loading...</span></p>
+                            <p style="color: #4A5568; font-size: 0.9rem;"><strong>Hourly Rate:</strong> ₹<span id="profileHourlyRateDropdown">0</span></p>
+                        </div>
+                        <button onclick="window.location.href='edit-worker-profile.html'" style="width: 100%; background: #8B7355; color: white; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; margin-top: 1rem; transition: background 0.3s;" onmouseover="this.style.background='#6B5B47'" onmouseout="this.style.background='#8B7355'">Edit Profile</button>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <button onclick="logout()" style="width: 100%; background: #EF4444; color: white; padding: 0.75rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.3s;" onmouseover="this.style.background='#DC2626'" onmouseout="this.style.background='#EF4444'">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main style="margin-top: 80px; background: #F8FAFC; min-height: 100vh;">
+        <!-- Hero Section -->
+        <div style="background: linear-gradient(135deg, #8B7355 0%, #6B5B47 100%); color: white; padding: 3rem 2rem;">
+            <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 700; animation: fadeInUp 1s ease-out;">Welcome back, <span id="heroName" style="color: #F59E0B; animation: pulse 2s infinite;"></span>!</h1>
+                    <p id="heroSubtext" style="font-size: 1.2rem; opacity: 0.9; animation: fadeInUp 1s ease-out 0.5s both;">Ready to serve your customers today?</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 16px; backdrop-filter: blur(10px); text-align: center;">
+                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                        <span style="color: #F59E0B; font-size: 1.5rem; margin-right: 0.5rem;">★</span>
+                        <span id="heroRating" style="font-size: 1.5rem; font-weight: bold;">0.0</span>
+                    </div>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Your Rating</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+            <!-- Quick Stats -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0;">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10B981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="white"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 style="color: #1A202C; margin-bottom: 0.25rem;">Total Earnings</h3>
+                            <p style="color: #718096; font-size: 0.9rem;">This month</p>
+                        </div>
+                    </div>
+                    <div style="background: #ECFDF5; padding: 1rem; border-radius: 8px;">
+                        <p style="color: #065F46; font-size: 1.5rem; font-weight: bold; margin: 0;">₹<span id="monthlyEarnings">0</span></p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0;">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #3B82F6, #1D4ED8); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M16 4H18C19.1046 4 20 4.89543 20 6V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V6C4 4.89543 4.89543 4 6 4H8" stroke="white" stroke-width="2"/>
+                                <rect x="8" y="2" width="8" height="4" rx="1" stroke="white" stroke-width="2"/>
+                                <path d="M9 12L11 14L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 style="color: #1A202C; margin-bottom: 0.25rem;">Completed Jobs</h3>
+                            <p style="color: #718096; font-size: 0.9rem;">This month</p>
+                        </div>
+                    </div>
+                    <div style="background: #EBF8FF; padding: 1rem; border-radius: 8px;">
+                        <p style="color: #1E40AF; font-size: 1.5rem; font-weight: bold; margin: 0;"><span id="completedJobs">0</span> jobs</p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0;">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #F59E0B, #D97706); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="white"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 style="color: #1A202C; margin-bottom: 0.25rem;">Average Rating</h3>
+                            <p style="color: #718096; font-size: 0.9rem;">From customers</p>
+                        </div>
+                    </div>
+                    <div style="background: #FFFBEB; padding: 1rem; border-radius: 8px;">
+                        <p style="color: #92400E; font-size: 1.5rem; font-weight: bold; margin: 0;"><span id="avgRating">0.0</span> ★</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Bookings -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0; margin-bottom: 3rem;">
+                <h2 style="color: #1A202C; margin-bottom: 1.5rem; font-size: 1.5rem;">Recent Bookings</h2>
+                <div id="recentBookings">
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                        <p>Loading your recent bookings...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Reviews -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0; margin-bottom: 3rem;">
+                <h2 style="color: #1A202C; margin-bottom: 1.5rem; font-size: 1.5rem;">Customer Reviews</h2>
+                <div id="customerReviews">
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
+                        <p>Loading customer reviews...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customer Locations Map -->
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E2E8F0;">
+                <h2 style="color: #1A202C; margin-bottom: 1.5rem; font-size: 1.5rem;">Customer Locations</h2>
+                <div id="customerLocations">
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📍</div>
+                        <p>Loading customer locations...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+
+    <script src="js/config.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        // Check if worker is logged in
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!user.userId || user.userType !== 'WORKER') {
+            window.location.href = 'worker-auth.html';
+        }
+        
+        // Set initial display values
+        document.getElementById('workerName').textContent = user.fullName;
+        document.getElementById('heroName').textContent = user.fullName;
+        document.getElementById('profileInitial').textContent = user.fullName.charAt(0).toUpperCase();
+        document.getElementById('profileInitialLarge').textContent = user.fullName.charAt(0).toUpperCase();
+        document.getElementById('profileNameFull').textContent = user.fullName;
+        
+        // Load worker data and bookings
+        loadWorkerProfile();
+        loadWorkerBookings();
+        loadWorkerStats();
+        loadWorkerReviews();
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const profileMenu = document.querySelector('.profile-menu');
+            if (!profileMenu.contains(event.target)) {
+                document.getElementById('profileDropdown').style.display = 'none';
+                document.getElementById('dropdownArrow').style.transform = 'rotate(0deg)';
+            }
+        });
+        
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        
+        // Load worker profile
+        async function loadWorkerProfile() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/workers/${user.userId}`);
+                if (response.ok) {
+                    const workerData = await response.json();
+                    document.getElementById('profileEmailDropdown').textContent = workerData.email;
+                    document.getElementById('profilePhoneDropdown').textContent = workerData.phone;
+                    document.getElementById('profileDistrictDropdown').textContent = workerData.district || 'Not set';
+                    document.getElementById('profileHourlyRateDropdown').textContent = workerData.hourlyRate || '0';
+                    document.getElementById('workerProfession').textContent = workerData.profession || 'Professional';
+                    document.getElementById('workerRating').textContent = workerData.rating.toFixed(1);
+                    document.getElementById('heroRating').textContent = workerData.rating.toFixed(1);
+                    document.getElementById('avgRating').textContent = workerData.rating.toFixed(1);
+                    document.getElementById('totalEarnings').textContent = workerData.totalEarnings || '0';
+                } else {
+                    console.error('Failed to load worker profile');
+                }
+            } catch (error) {
+                console.error('Error loading worker profile:', error);
+            }
+        }
+        
+        // Toggle profile dropdown
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profileDropdown');
+            const arrow = document.getElementById('dropdownArrow');
+            
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                dropdown.style.display = 'block';
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                dropdown.style.display = 'none';
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        // Load worker bookings
+        async function loadWorkerBookings() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings/worker/${user.userId}`);
+                if (response.ok) {
+                    const bookings = await response.json();
+                    displayRecentBookings(bookings.slice(0, 5));
+                    displayCustomerLocations(bookings);
+                } else {
+                    document.getElementById('recentBookings').innerHTML = '<p style="text-align: center; color: #718096;">No bookings yet</p>';
+                }
+            } catch (error) {
+                document.getElementById('recentBookings').innerHTML = '<p style="text-align: center; color: #718096;">Error loading bookings</p>';
+            }
+        }
+        
+        // Load worker statistics
+        async function loadWorkerStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings/worker/${user.userId}`);
+                if (response.ok) {
+                    const bookings = await response.json();
+                    const completedBookings = bookings.filter(b => b.status === 'COMPLETED');
+                    const thisMonth = new Date().getMonth();
+                    const thisYear = new Date().getFullYear();
+                    
+                    const monthlyCompleted = completedBookings.filter(b => {
+                        const bookingDate = new Date(b.bookingDate);
+                        return bookingDate.getMonth() === thisMonth && bookingDate.getFullYear() === thisYear;
+                    });
+                    
+                    document.getElementById('completedJobs').textContent = monthlyCompleted.length;
+                    
+                    // Calculate monthly earnings (assuming hourly rate * hours worked)
+                    const monthlyEarnings = monthlyCompleted.reduce((total, booking) => {
+                        return total + (booking.totalAmount || 0);
+                    }, 0);
+                    document.getElementById('monthlyEarnings').textContent = monthlyEarnings;
+                }
+            } catch (error) {
+                console.error('Error loading worker stats:', error);
+            }
+        }
+        
+        // Display recent bookings
+        function displayRecentBookings(bookings) {
+            const container = document.getElementById('recentBookings');
+            
+            if (bookings.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style="margin-bottom: 1rem;">
+                            <path d="M16 4H18C19.1046 4 20 4.89543 20 6V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V6C4 4.89543 4.89543 4 6 4H8" stroke="#9CA3AF" stroke-width="2"/>
+                            <rect x="8" y="2" width="8" height="4" rx="1" stroke="#9CA3AF" stroke-width="2"/>
+                        </svg>
+                        <p>No bookings yet. Your first customer is waiting!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = bookings.map(booking => `
+                <div style="display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid #E2E8F0; last-child:border-bottom: none;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                        <span style="color: white; font-weight: bold;">${booking.user.fullName.charAt(0)}</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <h4 style="color: #1A202C; margin-bottom: 0.25rem;">${booking.user.fullName}</h4>
+                        <p style="color: #718096; font-size: 0.9rem; margin-bottom: 0.25rem;">${new Date(booking.bookingDate).toLocaleDateString()}</p>
+                        <p style="color: #6B7280; font-size: 0.8rem;">📍 ${booking.user.address || 'Address not provided'}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="
+                            padding: 0.25rem 0.75rem; 
+                            border-radius: 12px; 
+                            font-size: 0.8rem; 
+                            font-weight: 500;
+                            background: ${booking.status === 'CONFIRMED' ? '#D1FAE5' : booking.status === 'COMPLETED' ? '#FEF3C7' : '#DBEAFE'};
+                            color: ${booking.status === 'CONFIRMED' ? '#065F46' : booking.status === 'COMPLETED' ? '#92400E' : '#1E40AF'};
+                        ">${booking.status}</span>
+                        <p style="color: #374151; font-weight: 600; margin-top: 0.5rem;">₹${booking.totalAmount || 0}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Display customer locations
+        function displayCustomerLocations(bookings) {
+            const container = document.getElementById('customerLocations');
+            const locations = bookings.filter(b => b.user.address).map(b => ({
+                name: b.user.fullName,
+                address: b.user.address,
+                status: b.status,
+                date: b.bookingDate
+            }));
+            
+            if (locations.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <p>No customer locations available</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+                    ${locations.map(location => `
+                        <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 1rem;">
+                            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                                <span style="font-size: 1.2rem; margin-right: 0.5rem;">📍</span>
+                                <h4 style="color: #1A202C; margin: 0;">${location.name}</h4>
+                            </div>
+                            <p style="color: #6B7280; font-size: 0.9rem; margin-bottom: 0.5rem;">${location.address}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.8rem; color: #9CA3AF;">${new Date(location.date).toLocaleDateString()}</span>
+                                <span style="
+                                    padding: 0.2rem 0.5rem; 
+                                    border-radius: 8px; 
+                                    font-size: 0.7rem; 
+                                    background: ${location.status === 'COMPLETED' ? '#D1FAE5' : '#DBEAFE'};
+                                    color: ${location.status === 'COMPLETED' ? '#065F46' : '#1E40AF'};
+                                ">${location.status}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        // Load worker reviews
+        async function loadWorkerReviews() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/reviews/worker/${user.userId}`);
+                if (response.ok) {
+                    const reviews = await response.json();
+                    displayWorkerReviews(reviews);
+                } else {
+                    document.getElementById('customerReviews').innerHTML = '<p style="text-align: center; color: #718096;">No reviews yet</p>';
+                }
+            } catch (error) {
+                document.getElementById('customerReviews').innerHTML = '<p style="text-align: center; color: #718096;">Error loading reviews</p>';
+            }
+        }
+        
+        function displayWorkerReviews(reviews) {
+            const container = document.getElementById('customerReviews');
+            
+            if (reviews.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #718096;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
+                        <p>No reviews yet. Complete your first job to get reviews!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = reviews.map(review => `
+                <div style="border: 1px solid #E2E8F0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8B7355, #6B5B47); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                <span style="color: white; font-weight: bold;">${review.user.fullName.charAt(0)}</span>
+                            </div>
+                            <div>
+                                <h4 style="color: #1A202C; margin-bottom: 0.25rem;">${review.user.fullName}</h4>
+                                <div style="display: flex; align-items: center;">
+                                    ${Array.from({length: 5}, (_, i) => `<span style="color: ${i < review.rating ? '#F59E0B' : '#E5E7EB'}; font-size: 1.2rem;">★</span>`).join('')}
+                                    <span style="color: #6B7280; margin-left: 0.5rem; font-size: 0.9rem;">${review.rating}/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    ${review.comment ? `<p style="color: #4A5568; font-style: italic; margin: 0;">${review.comment}</p>` : ''}
+                </div>
+            `).join('');
+        }
+        
+        // Add typewriter effect to subtitle
+        setTimeout(() => {
+            document.getElementById('heroSubtext').classList.add('typewriter');
+        }, 1500);
+    </script>
+</body>
+</html>

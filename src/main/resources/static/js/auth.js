@@ -1,0 +1,1 @@
+// This file is now unused - auth logic is in individual pages
